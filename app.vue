@@ -31,7 +31,7 @@ window.global = window;
             <!-- 版本信息 - 响应式设计 -->
             <div class="version-info">
                 <p class="text-xs">
-                    Developed Based on totoro-paradise v{{ appConfig.version }}
+                    Developed Based on totoro-paradise
                 </p>
                 <p class="text-xs">
                     Original Developer：<a href="https://github.com/BeiyanYunyi" target="_blank" rel="noopener noreferrer" class="no-underline hover:text-blue-500">北雁云依（BeiyanYunyi）</a>
@@ -41,9 +41,6 @@ window.global = window;
                 </p>
                 <p class="text-xs">
                     Copyright © 2026 shiywhh. All Rights Reserved.
-                </p>
-                <p class="text-xs">
-                    This version is not open source.
                 </p>
             </div>
         </VMain>
