@@ -244,11 +244,7 @@ export function generateRunData(options: {
     let routeId = "sunrunLine-20210918000001";
 
     if (task.run_point_list && task.run_point_list.length > 0) {
-        if (pointIndex !== undefined && pointIndex >= 0 && pointIndex < task.run_point_list.length) {
-            selectedPoint = task.run_point_list[pointIndex];
-        } else {
-            selectedPoint = selectPointForCampus(task.run_point_list, campusName) || task.run_point_list[0];
-        }
+        selectedPoint = selectPointForCampus(task.run_point_list, campusName) || task.run_point_list[0];
 
         if (selectedPoint) {
             startPoint = {

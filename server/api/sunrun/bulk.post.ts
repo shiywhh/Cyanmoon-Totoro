@@ -54,8 +54,8 @@ export default defineEventHandler(async (event: H3Event) => {
         }
 
         // 3. 生成可用日期列表
-        const startDate = new Date(task.data.start_date);
-        const endDate = new Date(task.data.end_date);
+        const startDate = new Date(task.data.start_date + 'T00:00:00');
+        const endDate = new Date(task.data.end_date + 'T00:00:00');
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -73,7 +73,10 @@ export default defineEventHandler(async (event: H3Event) => {
         const allDates: string[] = [];
         const currentDate = new Date(startDate);
         while (currentDate <= actualEndDate) {
-            const dateStr = currentDate.toISOString().split('T')[0];
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(currentDate.getDate()).padStart(2, '0');
+            const dateStr = `${year}-${month}-${day}`;
             if (!existingDays.has(dateStr)) {
                 allDates.push(dateStr);
             }
