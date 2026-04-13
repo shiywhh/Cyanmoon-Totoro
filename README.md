@@ -106,8 +106,10 @@
 Cyanmoon-Totoro/
 ├── components/                  # Vue 组件
 │   ├── FreeRunDetail.vue           # 自由跑详情
-│   ├── FreeRunExecution.vue         # 自由跑执行
-│   └── FreeRunSetup.vue           # 自由跑设置
+│   ├── FreeRunExecution.vue        # 自由跑执行
+│   ├── FreeRunExecution.test.ts
+│   ├── FreeRunSetup.vue            # 自由跑设置
+│   └── FreeRunSetup.test.ts
 ├── composables/                 # Vue Composables
 │   ├── useFreeRun.ts             # 自由跑状态管理
 │   ├── useFreeRunConfig.ts       # 自由跑配置
@@ -125,24 +127,128 @@ Cyanmoon-Totoro/
 ├── server/                      # Nitro 服务端
 │   ├── api/                     # API 路由
 │   │   ├── login/              # 登录相关
-│   │   ├── scanQr/            # 二维码扫描
+│   │   │   ├── qrcode.get.ts
+│   │   │   ├── poll/[uuid].get.ts
+│   │   │   └── complete.post.ts
+│   │   ├── scanQr/             # 二维码扫描
+│   │   │   ├── index.ts
+│   │   │   └── [uuid].ts
 │   │   ├── sunrun/             # 阳光跑 API
+│   │   │   ├── submit.post.ts
+│   │   │   ├── records.post.ts
+│   │   │   └── bulk.post.ts
 │   │   ├── sunRunPaper.post.ts
-│   │   └── totoro/             # 代理到龙猫 API
-│   └── utils/                  # 服务端工具
+│   │   └── totoro/              # 代理到龙猫 API
+│   │       └── [...slug].ts
+│   ├── routes/                  # 自定义路由
+│   │   └── _builds-meta.ts
+│   └── utils/                   # 服务端工具
+│       ├── config.ts
+│       ├── crypto.ts
+│       └── runDataGenerator.ts
 ├── src/                         # 源代码
 │   ├── classes/                 # 类文件
-│   ├── controllers/            # 控制器
-│   ├── data/                  # 静态数据
-│   ├── middlewares/           # 中间件
-│   ├── types/                 # TypeScript 类型
-│   ├── utils/                # 工具函数
-│   └── wrappers/              # API 封装
+│   │   ├── ApiEndpointDiscovery.ts
+│   │   ├── ApiEndpointDiscovery.test.ts
+│   │   ├── ApiSpecGenerator.ts
+│   │   ├── ApiSpecGenerator.test.ts
+│   │   ├── BatchDataGenerator.ts
+│   │   ├── BatchDataGenerator.test.ts
+│   │   ├── EncryptionVerifier.ts
+│   │   ├── EncryptionVerifier.test.ts
+│   │   ├── FreeRunConfig.ts
+│   │   ├── FreeRunConfig.test.ts
+│   │   ├── FreeRunDataGenerator.ts
+│   │   ├── FreeRunDataGenerator.test.ts
+│   │   ├── FreeRunErrorHandler.ts
+│   │   ├── FreeRunErrorHandler.test.ts
+│   │   ├── NetworkTrafficAnalyzer.ts
+│   │   ├── NetworkTrafficAnalyzer.test.ts
+│   │   ├── ParameterValidator.ts
+│   │   ├── ParameterValidator.test.ts
+│   │   ├── RecordManager.ts
+│   │   ├── RecordManager.test.ts
+│   │   ├── RequestFormatAnalyzer.ts
+│   │   ├── RequestFormatAnalyzer.test.ts
+│   │   ├── ResponseFormatAnalyzer.ts
+│   │   ├── ResponseFormatAnalyzer.test.ts
+│   │   ├── RunCalculator.ts
+│   │   ├── RunCalculator.test.ts
+│   │   ├── TemplateManager.ts
+│   │   ├── TemplateManager.test.ts
+│   │   ├── UserSession.ts
+│   │   └── Vector.ts
+│   ├── controllers/             # 控制器
+│   │   └── generateSunRunExercisesReq.ts
+│   ├── data/                   # 静态数据
+│   │   └── rsaKeys.ts
+│   ├── types/                   # TypeScript 类型
+│   │   ├── requestTypes/       # 请求类型
+│   │   │   ├── BasicRequest.d.ts
+│   │   │   ├── FreeRunRequest.d.ts
+│   │   │   ├── GetLesseeServerRequest.d.ts
+│   │   │   ├── GetMornSignPaperRequest.d.ts
+│   │   │   ├── GetSchoolMonthByTermRequest.d.ts
+│   │   │   ├── GetSchoolTermRequest.d.ts
+│   │   │   ├── GetSunRunArchDetailRequest.d.ts
+│   │   │   ├── GetSunRunArchRequest.d.ts
+│   │   │   ├── LoginRequest.d.ts
+│   │   │   ├── MorningExercisesRequest.d.ts
+│   │   │   ├── SunRunExercisesDetailRequest.d.ts
+│   │   │   ├── SunRunExercisesRequest.d.ts
+│   │   │   └── UpdateAppVersionRequest.d.ts
+│   │   ├── responseTypes/      # 响应类型
+│   │   │   ├── BaseResponse.d.ts
+│   │   │   ├── FreeRunResponse.d.ts
+│   │   │   ├── GetAppAdResponse.d.ts
+│   │   │   ├── GetAppFrontPageResponse.d.ts
+│   │   │   ├── GetAppNoticeResponse.d.ts
+│   │   │   ├── GetAppSloganResponse.d.ts
+│   │   │   ├── GetLesseeServerResponse.d.ts
+│   │   │   ├── GetMornSignPaperResponse.d.ts
+│   │   │   ├── GetRegisterUrlResponse.d.ts
+│   │   │   ├── GetRunBeginResponse.d.ts
+│   │   │   ├── GetSchoolMonthByTermResponse.d.ts
+│   │   │   ├── GetSchoolTermResponse.d.ts
+│   │   │   ├── GetSunRunArchDetailResponse.d.ts
+│   │   │   ├── GetSunRunArchResponse.d.ts
+│   │   │   ├── GetSunRunPaperResponse.d.ts
+│   │   │   ├── LoginResponse.d.ts
+│   │   │   ├── MorningExercisesResponse.d.ts
+│   │   │   ├── SunRunExercisesDetailResponse.d.ts
+│   │   │   ├── SunRunExercisesResponse.d.ts
+│   │   │   └── UpdateAppVersionResponse.d.ts
+│   │   ├── reverseEngineering/ # 反向工程类型
+│   │   │   └── NetworkTypes.d.ts
+│   │   ├── DefaultMiddleware.d.ts
+│   │   ├── Route.d.ts
+│   │   └── RunPoint.d.ts
+│   ├── utils/                   # 工具函数
+│   │   ├── calCalculator.ts
+│   │   ├── decryptRequestContent.ts
+│   │   ├── distanceCalculator.ts
+│   │   ├── encryptRequestContent.ts
+│   │   ├── formatRouteToAMap.ts
+│   │   ├── generateMac.ts
+│   │   ├── generateRoute.ts
+│   │   ├── nodeRSA.ts
+│   │   ├── normalRandom.ts
+│   │   └── timeUtil.ts
+│   └── wrappers/                # API 封装
+│       ├── TotoroApiWrapper.ts
+│       └── TotoroApiWrapper.test.ts
 ├── utils/                      # 工具函数
+│   └── poem.ts
 ├── public/                     # 静态资源
+│   └── favicon.ico
 ├── plugins/                    # Nuxt 插件
+│   └── vuetify.ts
+├── error.vue                    # 错误页面
+├── app.config.ts               # App 配置
 ├── nuxt.config.ts             # Nuxt 配置
+├── tsconfig.json              # TypeScript 配置
 ├── package.json               # 依赖管理
+├── pnpm-lock.yaml             # pnpm 锁定文件
 └── LICENSE                    # 许可证
 ```
 
