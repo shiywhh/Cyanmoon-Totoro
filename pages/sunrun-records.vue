@@ -95,7 +95,7 @@
                         一键跑完 {{ runCount }} 次
                     </VBtn>
 
-                    <VAlert v-else type="success" variant="tonal">
+                                        <VAlert v-else color="success" variant="tonal" class="d-flex align-center justify-center">
                         <VIcon icon="i-mdi-check-circle" class="mr-1" />
                         已完成本周期所有跑步任务
                     </VAlert>
