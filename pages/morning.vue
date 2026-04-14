@@ -95,12 +95,6 @@
             }
         } catch (err: any) {
             console.error('获取早操签到数据失败:', err);
-            // Token 失效，清除 session 并跳转回首页
-            if (err?.message?.includes('401') || err?.code === 'INVALID_TOKEN') {
-                clearSession();
-                router.push('/');
-                return;
-            }
             error.value = err.message || '获取早操签到数据失败,请稍后重试';
             showMessage('获取早操签到数据失败,请稍后重试', 'error');
         } finally {

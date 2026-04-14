@@ -427,14 +427,8 @@
                 records.value = result.records || [];
                 taskInfo.value = result.task_info || null;
             }
-        } catch (error: any) {
+        } catch (error) {
             console.error('获取记录失败:', error);
-            // Token 失效，清除 session 并跳转回首页
-            if (error?.message?.includes('401') || error?.code === 'INVALID_TOKEN') {
-                clearSession();
-                router.push('/');
-                return;
-            }
         } finally {
             recordsLoading.value = false;
         }

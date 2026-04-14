@@ -178,9 +178,7 @@
                 }
             } catch (error) {
                 console.warn('Failed to load sunRunPaper data:', error)
-                // Token 失效，清除 session 并跳转回首页
-                clearSession();
-                router.push('/');
+                // Don't block the user, they can still use free run with mock data
             } finally {
                 loadingSunRunPaper.value = false
             }

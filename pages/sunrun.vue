@@ -6,39 +6,26 @@
     const selectValue = ref('');
     const router = useRouter();
 
-    // 在 setup 顶层获取数据
-    const data = ref<any>(null);
-
-    const fetchData = async () => {
-        try {
-            const result = await TotoroApiWrapper.getSunRunPaper({
-                token: session.value.token,
-                campusId: session.value.campusId,
-                schoolId: session.value.schoolId,
-                stuNumber: session.value.stuNumber,
-            });
-            data.value = result;
-            sunrunPaper.value = result;
-        } catch (e) {
-            console.error('获取阳光跑数据失败:', e);
-            clearSession();
-            router.push('/');
+    const data = await TotoroApiWrapper.getSunRunPaper({
+        token: session.value.token,
+        campusId: session.value.campusId,
+        schoolId: session.value.schoolId,
+        stuNumber: session.value.stuNumber,
+    });
+    watchEffect(() => {
+        if (data) {
+            sunrunPaper.value = data;
         }
-    };
-
-    // 只有在客户端才执行数据获取
-    if (import.meta.client) {
-        await fetchData();
-    }
+    });
 
     const handleUpdate = (target: string) => {
         selectValue.value = target;
     };
 
     const handleRandom = () => {
-        if (data.value?.runPointList) {
-            const randomIndex = Math.floor(Math.random() * data.value.runPointList.length);
-            selectValue.value = data.value.runPointList[randomIndex].pointId;
+        if (data?.runPointList) {
+            const randomIndex = Math.floor(Math.random() * data.runPointList.length);
+            selectValue.value = data.runPointList[randomIndex].pointId;
         }
     };
 
