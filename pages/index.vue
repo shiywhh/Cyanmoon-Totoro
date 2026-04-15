@@ -1,6 +1,8 @@
 <script setup lang="ts">
     import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
+    import { isTokenErrorResponse } from '~/composables/useSession';
 
+    const route = useRoute();
     const router = useRouter();
     const session = useSession();
     const message = ref('');
@@ -54,6 +56,11 @@
 
     // 页面初始化
     onMounted(async () => {
+        // 检查是否是 token 失效后重定向回来的
+        if (route.query.reason === 'token_expired') {
+            message.value = '登录已过期，请重新扫码';
+        }
+
         // 检查是否已经有有效会话
         if (checkExistingSession()) {
             console.log('已有会话，无需重新扫码');

@@ -76,7 +76,16 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     if (!response.ok) {
         throw new Error(`Request failed: ${response.status}`);
     }
-    return response.json() as Promise<T>;
+    const data = await response.json() as T;
+
+    // 检测 token 失效错误
+    if (data && typeof data === 'object' && 'isTokenError' in data) {
+        const clearSession = useClearSession();
+        clearSession({ showExpiredMessage: true });
+        throw new Error('登录已过期，请重新扫码');
+    }
+
+    return data;
 }
 
 export const useTotoroApi = () => {

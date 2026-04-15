@@ -28,9 +28,57 @@ export default defineEventHandler(async (event) => {
   };
   const path = event.path.replace('/api/totoro/', '/app/');
   // event.context.params.slug to get the route segment: 'bar/baz'
-  return fetch(`https://app.xtotoro.com${path}`, {
-    method: 'post',
-    headers: { ...(headers as HeadersInit) },
-    body,
-  });
+
+  try {
+    const response = await fetch(`https://app.xtotoro.com${path}`, {
+      method: 'post',
+      headers: { ...(headers as HeadersInit) },
+      body,
+    });
+
+    // 获取响应文本
+    const responseText = await response.text();
+
+    // 尝试解析 JSON
+    let data: any;
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      // 如果不是 JSON，直接返回文本
+      return responseText;
+    }
+
+    // 检测 token 失效错误
+    if (data) {
+      const code = String(data.code || '');
+      const msg = String(data.message || '').toLowerCase();
+
+      // 龙猫 API 的 token 失效特征
+      const isTokenError =
+        code === '401' ||
+        code === '403' ||
+        code === '-1' ||
+        code === '1' ||
+        code === '1001' ||
+        /token|登录|认证|授权|expired|失效|session/i.test(msg);
+
+      if (isTokenError) {
+        // 返回带有明确错误标记的响应
+        return {
+          code: 'TOKEN_EXPIRED',
+          message: data.message || '登录已过期，请重新扫码',
+          isTokenError: true,
+          originalCode: code,
+        };
+      }
+    }
+
+    return data;
+  } catch (error: any) {
+    // 网络错误等
+    throw createError({
+      statusCode: 500,
+      message: error.message || '请求失败',
+    });
+  }
 });
